@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+
+<StackPane fx:id="rootStack" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="Controller"
+           style="-fx-background-color: #0f1117;">
+
+    <!-- ===================================================== -->
+    <!--  LOGIN PANE                                            -->
+    <!-- ===================================================== -->
+    <VBox fx:id="loginPane" alignment="CENTER"
+          style="-fx-background-color: linear-gradient(to bottom right, #0f1117, #1a1f2e);">
+        <VBox alignment="CENTER" spacing="20"
+              style="-fx-background-color: #1e2336; -fx-background-radius: 16;
+                     -fx-padding: 50 60 50 60; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 30, 0, 0, 8);"
+              maxWidth="420">
+
+            <!-- Logo Area -->
+            <Label text="🏨" style="-fx-font-size: 48;"/>
+            <Label text="LuxeStay" style="-fx-font-size: 32; -fx-font-weight: bold;
+                         -fx-text-fill: #c9a84c; -fx-font-family: 'Georgia';"/>
+            <Label text="Hotel Reservation System"
+                   style="-fx-font-size: 13; -fx-text-fill: #8892a4;"/>
+
+          <Separator style="-fx-background-color: #2d3448;">
+    <VBox.margin>
+        <Insets top="5" right="0" bottom="5" left="0"/>
+    </VBox.margin>
+</Separator>
+
+            <Label text="Sign In to Your Account"
+                   style="-fx-font-size: 16; -fx-text-fill: #e2e8f0; -fx-font-weight: bold;"/>
+
+            <TextField fx:id="loginUsername" promptText="Username"
+                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                              -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                              -fx-padding: 12 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                              -fx-border-radius: 8; -fx-border-width: 1.5;"
+                       maxWidth="Infinity"/>
+            <PasswordField fx:id="loginPassword" promptText="Password"
+                           style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                  -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                                  -fx-padding: 12 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                                  -fx-border-radius: 8; -fx-border-width: 1.5;"
+                           maxWidth="Infinity"/>
+
+            <Label fx:id="loginError" text="" style="-fx-text-fill: #f87171; -fx-font-size: 12;"/>
+
+            <Button text="Sign In" onAction="#onLogin"
+                    style="-fx-background-color: #c9a84c; -fx-text-fill: #0f1117;
+                           -fx-font-weight: bold; -fx-font-size: 15; -fx-background-radius: 8;
+                           -fx-padding: 12 0; -fx-cursor: hand;"
+                    maxWidth="Infinity"/>
+
+            <HBox alignment="CENTER" spacing="6">
+                <Label text="Don't have an account?" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                <Button text="Sign Up" onAction="#onGoToSignup"
+                        style="-fx-background-color: transparent; -fx-text-fill: #c9a84c;
+                               -fx-font-size: 13; -fx-cursor: hand; -fx-underline: true; -fx-padding: 0;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+    <!-- ===================================================== -->
+    <!--  SIGNUP PANE                                           -->
+    <!-- ===================================================== -->
+    <VBox fx:id="signupPane" alignment="CENTER" visible="false"
+          style="-fx-background-color: linear-gradient(to bottom right, #0f1117, #1a1f2e);">
+        <VBox alignment="CENTER" spacing="14"
+              style="-fx-background-color: #1e2336; -fx-background-radius: 16;
+                     -fx-padding: 40 60 40 60; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 30, 0, 0, 8);"
+              maxWidth="430">
+
+            <Label text="🏨" style="-fx-font-size: 36;"/>
+            <Label text="Create Account"
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+
+            <TextField fx:id="signupFullName" promptText="Full Name"
+                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                              -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                              -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                              -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+            <TextField fx:id="signupUsername" promptText="Username"
+                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                              -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                              -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                              -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+            <TextField fx:id="signupEmail" promptText="Email Address"
+                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                              -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                              -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                              -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+            <TextField fx:id="signupPhone" promptText="Phone Number"
+                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                              -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                              -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                              -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+            <PasswordField fx:id="signupPassword" promptText="Password"
+                           style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                  -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                                  -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                                  -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+            <PasswordField fx:id="signupConfirm" promptText="Confirm Password"
+                           style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                  -fx-prompt-text-fill: #4a5568; -fx-background-radius: 8;
+                                  -fx-padding: 11 16; -fx-font-size: 14; -fx-border-color: #2d3448;
+                                  -fx-border-radius: 8; -fx-border-width: 1.5;" maxWidth="Infinity"/>
+
+            <Label fx:id="signupError" text=""
+                   style="-fx-text-fill: #f87171; -fx-font-size: 12;"/>
+
+            <Button text="Create Account" onAction="#onSignup"
+                    style="-fx-background-color: #c9a84c; -fx-text-fill: #0f1117;
+                           -fx-font-weight: bold; -fx-font-size: 14; -fx-background-radius: 8;
+                           -fx-padding: 11 0; -fx-cursor: hand;" maxWidth="Infinity"/>
+
+            <HBox alignment="CENTER" spacing="6">
+                <Label text="Already have an account?" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                <Button text="Sign In" onAction="#onGoToLogin"
+                        style="-fx-background-color: transparent; -fx-text-fill: #c9a84c;
+                               -fx-font-size: 13; -fx-cursor: hand; -fx-underline: true; -fx-padding: 0;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+    <HBox fx:id="mainApp" visible="false"
+          style="-fx-background-color: #0f1117;">
+
+        <!-- ─── SIDEBAR ─── -->
+        <VBox prefWidth="230"
+              style="-fx-background-color: #141824; -fx-padding: 0;">
+
+            <!-- Brand -->
+            <VBox alignment="CENTER" spacing="4"
+                  style="-fx-padding: 30 20 20 20; -fx-border-color: transparent transparent #1e2336 transparent; -fx-border-width: 0 0 1 0;">
+                <Label text="🏨 LuxeStay"
+                       style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #c9a84c; -fx-font-family: 'Georgia';"/>
+                <Label fx:id="lblUserRole" text="USER"
+                       style="-fx-background-color: #c9a84c22; -fx-text-fill: #c9a84c;
+                              -fx-font-size: 10; -fx-background-radius: 4; -fx-padding: 2 8;"/>
+            </VBox>
+
+            <!-- User Info -->
+            <VBox style="-fx-padding: 16 20; -fx-border-color: transparent transparent #1e2336 transparent; -fx-border-width: 0 0 1 0;">
+                <Label text="👤" style="-fx-font-size: 28;"/>
+                <Label fx:id="lblWelcome" text="Welcome"
+                       style="-fx-text-fill: #e2e8f0; -fx-font-size: 13; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Navigation -->
+            <Label text="MENU" style="-fx-text-fill: #4a5568; -fx-font-size: 10;
+                          -fx-padding: 16 20 6 20; -fx-font-weight: bold;"/>
+
+            <Button fx:id="navDashboard" text="📊  Dashboard" onAction="#onNavDashboard"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: #c9a84c22; -fx-text-fill: #c9a84c;
+                           -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                           -fx-border-color: transparent; -fx-background-radius: 0;"/>
+            <Button fx:id="navSearch" text="🔍  Search Rooms" onAction="#onNavSearch"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8892a4;
+                           -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                           -fx-border-color: transparent; -fx-background-radius: 0;"/>
+            <Button fx:id="navMyBookings" text="📋  My Bookings" onAction="#onNavMyBookings"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: transparent; -fx-text-fill: #8892a4;
+                           -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                           -fx-border-color: transparent; -fx-background-radius: 0;"/>
+
+            <!-- Admin Section -->
+            <VBox fx:id="adminMenuSection" visible="false" managed="false">
+                <Label text="ADMIN" style="-fx-text-fill: #4a5568; -fx-font-size: 10;
+                              -fx-padding: 14 20 6 20; -fx-font-weight: bold;"/>
+                <Button fx:id="navManageRooms" text="🏠  Manage Rooms" onAction="#onNavManageRooms"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"
+                        style="-fx-background-color: transparent; -fx-text-fill: #8892a4;
+                               -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                               -fx-border-color: transparent; -fx-background-radius: 0;"/>
+                <Button fx:id="navManageUsers" text="👥  All Reservations" onAction="#onNavManageUsers"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"
+                        style="-fx-background-color: transparent; -fx-text-fill: #8892a4;
+                               -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                               -fx-border-color: transparent; -fx-background-radius: 0;"/>
+                <Button fx:id="navReports" text="📈  Reports" onAction="#onNavReports"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"
+                        style="-fx-background-color: transparent; -fx-text-fill: #8892a4;
+                               -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                               -fx-border-color: transparent; -fx-background-radius: 0;"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Logout -->
+            <Button fx:id="navLogout" text="🚪  Logout" onAction="#onLogout"
+                    maxWidth="Infinity" alignment="CENTER_LEFT"
+                    style="-fx-background-color: #f8717122; -fx-text-fill: #f87171;
+                           -fx-font-size: 14; -fx-padding: 12 20; -fx-cursor: hand;
+                           -fx-border-color: transparent; -fx-background-radius: 0;"/>
+        </VBox>
+
+        <!-- ─── MAIN CONTENT ─── -->
+        <StackPane fx:id="mainContent" HBox.hgrow="ALWAYS"
+                   style="-fx-background-color: #0f1117; -fx-padding: 30;">
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: DASHBOARD                                -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageDashboard" spacing="24">
+                <Label text="Dashboard" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+               <Label text="Overview of your hotel system"
+       style="-fx-text-fill: #8892a4; -fx-font-size: 14;">
+    <VBox.margin>
+        <Insets top="0" right="0" bottom="8" left="0"/>
+    </VBox.margin>
+</Label>
+
+                <!-- Stat Cards -->
+                <HBox spacing="20">
+                    <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 24; -fx-border-color: #c9a84c44; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="🏠" style="-fx-font-size: 28;"/>
+                        <Label text="Total Rooms" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="cardTotalRooms" text="—"
+                               style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #c9a84c;"/>
+                    </VBox>
+                    <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 24; -fx-border-color: #4ade8044; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="✅" style="-fx-font-size: 28;"/>
+                        <Label text="Available Rooms" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="cardAvailRooms" text="—"
+                               style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #4ade80;"/>
+                    </VBox>
+                    <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 24; -fx-border-color: #60a5fa44; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="📋" style="-fx-font-size: 28;"/>
+                        <Label text="Active Reservations" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="cardTotalRes" text="—"
+                               style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #60a5fa;"/>
+                    </VBox>
+                    <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 24; -fx-border-color: #a78bfa44; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="💰" style="-fx-font-size: 28;"/>
+                        <Label text="Total Revenue" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="cardRevenue" text="—"
+                               style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #a78bfa;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Quick Info -->
+                <VBox style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                             -fx-padding: 24;" spacing="12">
+                    <Label text="Quick Info" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+                    <Label text="• Standard Rooms: PKR 5,000 / night   |   Deluxe: PKR 9,000 / night   |   Suite: PKR 18,000 / night"
+                           style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                    <Label text="• Use 'Search Rooms' to find and book available rooms."
+                           style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                    <Label text="• Admin credentials: admin / admin123    |    Test user: user1 / user123"
+                           style="-fx-text-fill: #c9a84c; -fx-font-size: 12;"/>
+                </VBox>
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: SEARCH ROOMS                             -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageSearch" spacing="16" visible="false" managed="false">
+                <Label text="Search Rooms" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+
+                <!-- Search Filters -->
+                <HBox spacing="12" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #1e2336; -fx-padding: 20; -fx-background-radius: 12;">
+                    <VBox spacing="4">
+                        <Label text="Category" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                        <ComboBox fx:id="searchCategory" prefWidth="140"
+                                  style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;"/>
+                    </VBox>
+                    <VBox spacing="4">
+                        <Label text="Check-In Date" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                        <DatePicker fx:id="searchCheckIn" prefWidth="160"
+                                    style="-fx-background-color: #252c3f;"/>
+                    </VBox>
+                    <VBox spacing="4">
+                        <Label text="Check-Out Date" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                        <DatePicker fx:id="searchCheckOut" prefWidth="160"
+                                    style="-fx-background-color: #252c3f;"/>
+                    </VBox>
+                    <VBox spacing="4">
+                        <Label text=" " style="-fx-font-size: 12;"/>
+                        <Button text="🔍  Search" onAction="#onSearchRooms"
+                                style="-fx-background-color: #c9a84c; -fx-text-fill: #0f1117;
+                                       -fx-font-weight: bold; -fx-background-radius: 8;
+                                       -fx-padding: 9 20; -fx-cursor: hand;"/>
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="bookingStatus" text="" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                </HBox>
+
+                <!-- Results Table -->
+                <TableView fx:id="searchTable" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #1e2336; -fx-border-color: #2d3448; -fx-border-radius: 8;">
+                    <columns>
+                        <TableColumn fx:id="colSRoomNo"   text="Room #"    prefWidth="80"/>
+                        <TableColumn fx:id="colSCategory" text="Category"  prefWidth="100"/>
+                        <TableColumn fx:id="colSFloor"    text="Floor"     prefWidth="60"/>
+                        <TableColumn fx:id="colSCapacity" text="Capacity"  prefWidth="80"/>
+                        <TableColumn fx:id="colSAmenities" text="Amenities" prefWidth="260"/>
+                        <TableColumn fx:id="colSPrice"    text="Price/Night" prefWidth="110"/>
+                        <TableColumn fx:id="colSStatus"   text="Status"    prefWidth="100"/>
+                    </columns>
+                </TableView>
+
+                <Button text="🛎  Select Room &amp; Book" onAction="#onSelectRoom"
+                        style="-fx-background-color: #60a5fa; -fx-text-fill: #0f1117;
+                               -fx-font-weight: bold; -fx-background-radius: 8;
+                               -fx-padding: 10 24; -fx-cursor: hand;"/>
+
+                <!-- Booking Panel (hidden until room selected) -->
+                <VBox fx:id="bookingPanel" visible="false" managed="false" spacing="14"
+                      style="-fx-background-color: #1e2336; -fx-padding: 24;
+                             -fx-background-radius: 12; -fx-border-color: #c9a84c;
+                             -fx-border-radius: 12; -fx-border-width: 1.5;">
+                    <Label text="📝 Confirm Booking"
+                           style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #c9a84c;"/>
+                    <Label fx:id="bookRoomInfo" text=""
+                           style="-fx-text-fill: #e2e8f0; -fx-font-size: 14;"/>
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <VBox spacing="4">
+                            <Label text="Check-In" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                            <DatePicker fx:id="bookCheckIn" onAction="#onUpdateBookTotal"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Check-Out" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                            <DatePicker fx:id="bookCheckOut" onAction="#onUpdateBookTotal"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Payment Method" style="-fx-text-fill: #8892a4; -fx-font-size: 12;"/>
+                            <ComboBox fx:id="bookPayMethod" prefWidth="150"/>
+                        </VBox>
+                        <Label fx:id="bookTotalPrice" text=""
+                               style="-fx-text-fill: #4ade80; -fx-font-size: 16; -fx-font-weight: bold;"/>
+                    </HBox>
+                    <HBox spacing="12">
+                        <Button text="✅  Confirm Booking" onAction="#onConfirmBooking"
+                                style="-fx-background-color: #4ade80; -fx-text-fill: #0f1117;
+                                       -fx-font-weight: bold; -fx-background-radius: 8;
+                                       -fx-padding: 10 24; -fx-cursor: hand;"/>
+                        <Button text="✖  Cancel" onAction="#onCancelBookingPanel"
+                                style="-fx-background-color: #f8717133; -fx-text-fill: #f87171;
+                                       -fx-font-weight: bold; -fx-background-radius: 8;
+                                       -fx-padding: 10 20; -fx-cursor: hand;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: MY BOOKINGS                              -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageMyBookings" spacing="16" visible="false" managed="false">
+                <Label text="My Bookings" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+                <Label text="Your reservation history" style="-fx-text-fill: #8892a4; -fx-font-size: 14;"/>
+
+                <TableView fx:id="myBookingsTable" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #1e2336; -fx-border-color: #2d3448;">
+                    <columns>
+                        <TableColumn fx:id="colMResId"   text="Res #"      prefWidth="70"/>
+                        <TableColumn fx:id="colMRoom"    text="Room"       prefWidth="80"/>
+                        <TableColumn fx:id="colMCat"     text="Category"   prefWidth="110"/>
+                        <TableColumn fx:id="colMCheckIn"  text="Check-In"  prefWidth="110"/>
+                        <TableColumn fx:id="colMCheckOut" text="Check-Out" prefWidth="110"/>
+                        <TableColumn fx:id="colMTotal"   text="Total (PKR)" prefWidth="120"/>
+                        <TableColumn fx:id="colMStatus"  text="Status"     prefWidth="100"/>
+                    </columns>
+                </TableView>
+
+                <Button text="❌  Cancel Selected Reservation" onAction="#onCancelReservation"
+                        style="-fx-background-color: #f8717133; -fx-text-fill: #f87171;
+                               -fx-font-weight: bold; -fx-background-radius: 8;
+                               -fx-padding: 10 24; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: MANAGE ROOMS (ADMIN)                     -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageManageRooms" spacing="16" visible="false" managed="false">
+                <Label text="Manage Rooms" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+
+                <!-- Add Room Form -->
+                <VBox style="-fx-background-color: #1e2336; -fx-background-radius: 12; -fx-padding: 20;" spacing="12">
+                    <Label text="➕ Add New Room"
+                           style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #c9a84c;"/>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <VBox spacing="4">
+                            <Label text="Room Number" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <TextField fx:id="addRoomNumber" promptText="e.g. 401" prefWidth="100"
+                                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                              -fx-background-radius: 6; -fx-padding: 8 10;"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Category" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <ComboBox fx:id="addRoomCategory" prefWidth="120"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Floor" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <TextField fx:id="addFloor" promptText="e.g. 4" prefWidth="70"
+                                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                              -fx-background-radius: 6; -fx-padding: 8 10;"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Capacity" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <TextField fx:id="addCapacity" promptText="e.g. 2" prefWidth="80"
+                                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                              -fx-background-radius: 6; -fx-padding: 8 10;"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Price/Night" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <TextField fx:id="addPrice" promptText="e.g. 5000" prefWidth="100"
+                                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                              -fx-background-radius: 6; -fx-padding: 8 10;"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Status" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <ComboBox fx:id="addRoomStatus" prefWidth="130"/>
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="8">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS">
+                            <Label text="Amenities" style="-fx-text-fill: #8892a4; -fx-font-size: 11;"/>
+                            <TextField fx:id="addAmenities" promptText="WiFi, TV, AC, ..."
+                                       style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                              -fx-background-radius: 6; -fx-padding: 8 10;"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text=" " style="-fx-font-size: 11;"/>
+                            <Button text="➕ Add Room" onAction="#onAddRoom"
+                                    style="-fx-background-color: #c9a84c; -fx-text-fill: #0f1117;
+                                           -fx-font-weight: bold; -fx-background-radius: 8;
+                                           -fx-padding: 9 20; -fx-cursor: hand;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <TableView fx:id="roomsAdminTable" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #1e2336; -fx-border-color: #2d3448;">
+                    <columns>
+                        <TableColumn fx:id="colARoomNo"    text="Room #"     prefWidth="80"/>
+                        <TableColumn fx:id="colACategory"  text="Category"   prefWidth="100"/>
+                        <TableColumn fx:id="colAFloor"     text="Floor"      prefWidth="60"/>
+                        <TableColumn fx:id="colACapacity"  text="Capacity"   prefWidth="80"/>
+                        <TableColumn fx:id="colAAmenities" text="Amenities"  prefWidth="260"/>
+                        <TableColumn fx:id="colAPrice"     text="Price/Night" prefWidth="110"/>
+                        <TableColumn fx:id="colAStatus"    text="Status"     prefWidth="110"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="12">
+                    <Button text="🔄  Toggle Status" onAction="#onToggleRoomStatus"
+                            style="-fx-background-color: #60a5fa33; -fx-text-fill: #60a5fa;
+                                   -fx-font-weight: bold; -fx-background-radius: 8;
+                                   -fx-padding: 10 20; -fx-cursor: hand;"/>
+                    <Button text="🗑  Delete Room" onAction="#onDeleteRoom"
+                            style="-fx-background-color: #f8717133; -fx-text-fill: #f87171;
+                                   -fx-font-weight: bold; -fx-background-radius: 8;
+                                   -fx-padding: 10 20; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: MANAGE USERS / ALL RESERVATIONS (ADMIN)  -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageManageUsers" spacing="16" visible="false" managed="false">
+                <Label text="All Reservations" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+                <Label text="View and manage all guest reservations" style="-fx-text-fill: #8892a4; -fx-font-size: 14;"/>
+
+                <TableView fx:id="usersReservTable" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #1e2336; -fx-border-color: #2d3448;">
+                    <columns>
+                        <TableColumn fx:id="colUGuest"    text="Guest Name"  prefWidth="160"/>
+                        <TableColumn fx:id="colURoom"     text="Room"        prefWidth="80"/>
+                        <TableColumn fx:id="colUCheckIn"  text="Check-In"    prefWidth="110"/>
+                        <TableColumn fx:id="colUCheckOut" text="Check-Out"   prefWidth="110"/>
+                        <TableColumn fx:id="colUTotal"    text="Total (PKR)" prefWidth="120"/>
+                        <TableColumn fx:id="colUStatus"   text="Status"      prefWidth="110"/>
+                    </columns>
+                </TableView>
+
+                <Button text="❌  Cancel Selected Reservation" onAction="#onAdminCancelReservation"
+                        style="-fx-background-color: #f8717133; -fx-text-fill: #f87171;
+                               -fx-font-weight: bold; -fx-background-radius: 8;
+                               -fx-padding: 10 24; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- ─────────────────────────────────────────────── -->
+            <!--  PAGE: REPORTS (ADMIN)                          -->
+            <!-- ─────────────────────────────────────────────── -->
+            <VBox fx:id="pageReports" spacing="24" visible="false" managed="false">
+                <Label text="Reports &amp; Analytics" style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+                <Label text="System-wide statistics" style="-fx-text-fill: #8892a4; -fx-font-size: 14;"/>
+
+                <HBox spacing="20">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 28; -fx-border-color: #c9a84c44; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="📋" style="-fx-font-size: 32;"/>
+                        <Label text="Total Reservations" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="reportTotalRes" text="—"
+                               style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #c9a84c;"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 28; -fx-border-color: #4ade8044; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="💰" style="-fx-font-size: 32;"/>
+                        <Label text="Total Revenue" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="reportRevenue" text="—"
+                               style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #4ade80;"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 28; -fx-border-color: #f8717144; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="❌" style="-fx-font-size: 32;"/>
+                        <Label text="Cancellations" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="reportCancelled" text="—"
+                               style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #f87171;"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: #1e2336; -fx-background-radius: 12;
+                                 -fx-padding: 28; -fx-border-color: #60a5fa44; -fx-border-radius: 12; -fx-border-width: 1;">
+                        <Label text="📊" style="-fx-font-size: 32;"/>
+                        <Label text="Occupancy Rate" style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
+                        <Label fx:id="reportOccupancy" text="—"
+                               style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #60a5fa;"/>
+                    </VBox>
+                </HBox>
+
+                <VBox style="-fx-background-color: #1e2336; -fx-background-radius: 12; -fx-padding: 24;" spacing="10">
+                    <Label text="Room Category Pricing"
+                           style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #e2e8f0;"/>
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label text="🏨 Standard"
+                               style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                      -fx-background-radius: 6; -fx-padding: 8 16;"/>
+                        <Label text="PKR 5,000 / night" style="-fx-text-fill: #c9a84c; -fx-font-weight: bold;"/>
+                        <Region prefWidth="30"/>
+                        <Label text="🌟 Deluxe"
+                               style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                      -fx-background-radius: 6; -fx-padding: 8 16;"/>
+                        <Label text="PKR 9,000 / night" style="-fx-text-fill: #c9a84c; -fx-font-weight: bold;"/>
+                        <Region prefWidth="30"/>
+                        <Label text="👑 Suite"
+                               style="-fx-background-color: #252c3f; -fx-text-fill: #e2e8f0;
+                                      -fx-background-radius: 6; -fx-padding: 8 16;"/>
+                        <Label text="PKR 18,000 / night" style="-fx-text-fill: #c9a84c; -fx-font-weight: bold;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+        </StackPane>
+    </HBox>
+
+</StackPane>
