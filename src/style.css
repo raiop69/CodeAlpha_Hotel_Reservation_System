@@ -1,43 +1,68 @@
-/* Fix table text visibility */
+/* ── TABLE BASE ── */
 .table-view {
     -fx-background-color: #1e2336;
     -fx-border-color: #2d3448;
+    -fx-table-cell-border-color: transparent;
 }
+
+/* ── COLUMN HEADERS ── */
 .table-view .column-header-background {
     -fx-background-color: #141824;
 }
-.table-view .column-header, .table-view .filler {
+.table-view .column-header,
+.table-view .filler {
     -fx-background-color: #141824;
     -fx-border-color: #2d3448;
-    -fx-size: 35px;
+    -fx-size: 38px;
 }
 .table-view .column-header .label {
     -fx-text-fill: #c9a84c;
     -fx-font-weight: bold;
     -fx-font-size: 13px;
 }
-.table-view .table-cell {
-    -fx-text-fill: #e2e8f0;
-    -fx-font-size: 13px;
-    -fx-border-color: transparent transparent #1e2336 transparent;
-}
+
+/* ── ROWS ── */
 .table-row-cell {
     -fx-background-color: #1e2336;
+    -fx-border-color: transparent;
+    -fx-cell-size: 40px;
 }
 .table-row-cell:odd {
     -fx-background-color: #252c3f;
 }
-.table-row-cell:selected {
-    -fx-background-color: #c9a84c33;
-}
-.table-row-cell:selected .table-cell {
-    -fx-text-fill: #ffffff;
-}
 .table-row-cell:hover {
     -fx-background-color: #2d3448;
 }
+.table-row-cell:selected {
+    -fx-background-color: #c9a84c55;
+}
 
-/* Fix ComboBox text */
+/* ── CELLS — THE ACTUAL FIX ── */
+.table-row-cell .table-cell {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 13px;
+    -fx-padding: 0 10;
+    -fx-alignment: CENTER-LEFT;
+    -fx-background-color: transparent;
+}
+.table-row-cell:odd .table-cell {
+    -fx-text-fill: #e2e8f0;
+    -fx-background-color: transparent;
+}
+.table-row-cell:hover .table-cell {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: transparent;
+}
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: transparent;
+}
+.table-row-cell:empty .table-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* ── COMBOBOX ── */
 .combo-box {
     -fx-background-color: #252c3f;
     -fx-border-color: #2d3448;
@@ -47,6 +72,7 @@
 .combo-box .list-cell {
     -fx-text-fill: #e2e8f0;
     -fx-background-color: #252c3f;
+    -fx-padding: 5 10;
 }
 .combo-box-popup .list-view {
     -fx-background-color: #252c3f;
@@ -57,12 +83,26 @@
     -fx-background-color: #252c3f;
 }
 .combo-box-popup .list-view .list-cell:hover {
-    -fx-background-color: #c9a84c33;
+    -fx-background-color: #c9a84c44;
+    -fx-text-fill: #ffffff;
 }
 
-/* Fix DatePicker */
+/* ── DATEPICKER ── */
 .date-picker .text-field {
     -fx-background-color: #252c3f;
     -fx-text-fill: #e2e8f0;
     -fx-border-color: #2d3448;
+    -fx-padding: 6 10;
+}
+
+/* ── SCROLLBAR ── */
+.scroll-bar {
+    -fx-background-color: #1e2336;
+}
+.scroll-bar .thumb {
+    -fx-background-color: #2d3448;
+    -fx-background-radius: 4;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: #c9a84c44;
 }

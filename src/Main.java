@@ -1,5 +1,5 @@
- import javafx.application.Application;
- import javafx.fxml.FXMLLoader;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -9,15 +9,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui.fxml"));
-         Parent root = loader.load();
+        Parent root = loader.load();
 
         Scene scene = new Scene(root, 1280, 720);
-   scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
+        // Safe CSS loading — won't crash if file missing
+        java.net.URL cssUrl = getClass().getResource("style.css");
+        if (cssUrl != null) {
+            scene.getStylesheets().add(cssUrl.toExternalForm());
+        }
 
         primaryStage.setTitle("LuxeStay Hotel Reservation System");
         primaryStage.setScene(scene);
-//        primaryStage.setMinWidth(1280); 
-  //      primaryStage.setMinHeight(720);
         primaryStage.show();
     }
 

@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.layout.*;
 import java.net.URL;
 import java.sql.*;
@@ -174,42 +174,46 @@ public class Controller implements Initializable {
     }
 
     // ── TABLE COLUMN SETUP ────────────────────────────────────
-    private void initTableColumns() {
-        colSRoomNo.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
-        colSCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
-        colSFloor.setCellValueFactory(new PropertyValueFactory<>("floor"));
-        colSCapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        colSAmenities.setCellValueFactory(new PropertyValueFactory<>("amenities"));
-        colSPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        colSStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        searchTable.setItems(roomList);
+   private void initTableColumns() {
+    // ── Search Table ──
+    colSRoomNo.setCellValueFactory(c -> c.getValue().roomNumberProperty());
+    colSCategory.setCellValueFactory(c -> c.getValue().categoryProperty());
+    colSFloor.setCellValueFactory(c -> c.getValue().floorProperty().asObject());
+    colSCapacity.setCellValueFactory(c -> c.getValue().capacityProperty().asObject());
+    colSAmenities.setCellValueFactory(c -> c.getValue().amenitiesProperty());
+    colSPrice.setCellValueFactory(c -> c.getValue().priceProperty().asObject());
+    colSStatus.setCellValueFactory(c -> c.getValue().statusProperty());
+    searchTable.setItems(roomList);
 
-        colMResId.setCellValueFactory(new PropertyValueFactory<>("resId"));
-        colMRoom.setCellValueFactory(new PropertyValueFactory<>("roomNum"));
-        colMCat.setCellValueFactory(new PropertyValueFactory<>("category"));
-        colMCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkIn"));
-        colMCheckOut.setCellValueFactory(new PropertyValueFactory<>("checkOut"));
-        colMTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-        colMStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        myBookingsTable.setItems(resList);
+    // ── My Bookings ──
+    colMResId.setCellValueFactory(c -> c.getValue().resIdProperty().asObject());
+    colMRoom.setCellValueFactory(c -> c.getValue().roomNumProperty());
+    colMCat.setCellValueFactory(c -> c.getValue().categoryProperty());
+    colMCheckIn.setCellValueFactory(c -> c.getValue().checkInProperty());
+    colMCheckOut.setCellValueFactory(c -> c.getValue().checkOutProperty());
+    colMTotal.setCellValueFactory(c -> c.getValue().totalProperty().asObject());
+    colMStatus.setCellValueFactory(c -> c.getValue().statusProperty());
+    myBookingsTable.setItems(resList);
 
-        colARoomNo.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
-        colACategory.setCellValueFactory(new PropertyValueFactory<>("category"));
-        colAFloor.setCellValueFactory(new PropertyValueFactory<>("floor"));
-        colACapacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        colAAmenities.setCellValueFactory(new PropertyValueFactory<>("amenities"));
-        colAPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        colAStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        roomsAdminTable.setItems(allRooms);
+    // ── Admin Manage Rooms ──
+    colARoomNo.setCellValueFactory(c -> c.getValue().roomNumberProperty());
+    colACategory.setCellValueFactory(c -> c.getValue().categoryProperty());
+    colAFloor.setCellValueFactory(c -> c.getValue().floorProperty().asObject());
+    colACapacity.setCellValueFactory(c -> c.getValue().capacityProperty().asObject());
+    colAAmenities.setCellValueFactory(c -> c.getValue().amenitiesProperty());
+    colAPrice.setCellValueFactory(c -> c.getValue().priceProperty().asObject());
+    colAStatus.setCellValueFactory(c -> c.getValue().statusProperty());
+    roomsAdminTable.setItems(allRooms);
 
-        colUGuest.setCellValueFactory(new PropertyValueFactory<>("guestName"));
-        colURoom.setCellValueFactory(new PropertyValueFactory<>("roomNum"));
-        colUCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkIn"));
-        colUCheckOut.setCellValueFactory(new PropertyValueFactory<>("checkOut"));
-        colUTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-        colUStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        usersReservTable.setItems(allRes);
-    }
+    // ── Admin All Reservations ──
+    colUGuest.setCellValueFactory(c -> c.getValue().guestNameProperty());
+    colURoom.setCellValueFactory(c -> c.getValue().roomNumProperty());
+    colUCheckIn.setCellValueFactory(c -> c.getValue().checkInProperty());
+    colUCheckOut.setCellValueFactory(c -> c.getValue().checkOutProperty());
+    colUTotal.setCellValueFactory(c -> c.getValue().totalProperty().asObject());
+    colUStatus.setCellValueFactory(c -> c.getValue().statusProperty());
+    usersReservTable.setItems(allRes);
+}
 
     private void initComboBoxes() {
         searchCategory.getItems().addAll("All", "Standard", "Deluxe", "Suite");
