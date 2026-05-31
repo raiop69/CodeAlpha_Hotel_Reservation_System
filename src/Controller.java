@@ -339,28 +339,47 @@ public class Controller implements Initializable {
     // ============================================================
     //  DASHBOARD
     // ============================================================
-    private void loadDashboard() {
-        try (Connection con = DatabaseManager.getConnection()) {
-            // Total rooms
-            ResultSet rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Rooms");
-            if (rs.next()) cardTotalRooms.setText(String.valueOf(rs.getInt(1)));
+private void loadDashboard() {
+    try (Connection con = DatabaseManager.getConnection()) {
+        boolean isAdmin = "admin".equals(currentUser.role);
 
-            // Available rooms
-            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Rooms WHERE status='available'");
-            if (rs.next()) cardAvailRooms.setText(String.valueOf(rs.getInt(1)));
+        // Total rooms
+        ResultSet rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Rooms");
+        if (rs.next()) cardTotalRooms.setText(String.valueOf(rs.getInt(1)));
 
-            // Total reservations
-            rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Reservations WHERE status='confirmed'");
+        // Available rooms
+        rs = con.createStatement().executeQuery(
+            "SELECT COUNT(*) FROM Rooms WHERE status='available'");
+        if (rs.next()) cardAvailRooms.setText(String.valueOf(rs.getInt(1)));
+
+        if (isAdmin) {
+            // Admin sees ALL confirmed reservations
+            rs = con.createStatement().executeQuery(
+                "SELECT COUNT(*) FROM Reservations WHERE status='confirmed'");
             if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
 
-            // Revenue
+            // Admin sees total revenue
             rs = con.createStatement().executeQuery(
-                "SELECT ISNULL(SUM(total_price),0) FROM Reservations WHERE status IN ('confirmed','completed')");
-            if (rs.next()) cardRevenue.setText("PKR " + String.format("%,.0f", rs.getDouble(1)));
-        } catch (SQLException e) {
-            showAlert("DB Error", e.getMessage());
+                "SELECT ISNULL(SUM(total_price),0) FROM Reservations " +
+                "WHERE status IN ('confirmed','completed')");
+            if (rs.next())
+                cardRevenue.setText("PKR " + String.format("%,.0f", rs.getDouble(1)));
+        } else {
+            // Regular user sees only their own reservations
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT COUNT(*) FROM Reservations WHERE status='confirmed' AND user_id=?");
+            ps.setInt(1, currentUser.userId);
+            rs = ps.executeQuery();
+            if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
+
+            // Hide revenue card for regular users
+            cardRevenue.setText("N/A");
+            cardRevenue.setStyle("-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #4a5568;");
         }
+    } catch (SQLException e) {
+        showAlert("DB Error", e.getMessage());
     }
+}
 
     // ============================================================
     //  SEARCH ROOMS

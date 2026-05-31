@@ -261,8 +261,8 @@
                            style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
                     <Label text="• Use 'Search Rooms' to find and book available rooms."
                            style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
-                    <Label text="• Admin credentials: admin / admin123    |    Test user: user1 / user123"
-                           style="-fx-text-fill: #c9a84c; -fx-font-size: 12;"/>
+       <Label text="• Check 'My Bookings' to view or cancel your reservations."
+       style="-fx-text-fill: #8892a4; -fx-font-size: 13;"/>
                 </VBox>
             </VBox>
 

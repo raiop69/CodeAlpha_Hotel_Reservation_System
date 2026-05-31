@@ -12,7 +12,7 @@ public class Main extends Application {
          Parent root = loader.load();
 
         Scene scene = new Scene(root, 1280, 720);
-//        scene.getStylesheets().add(getClass().getResource("/hotel/style.css").toExternalForm());
+   scene.getStylesheets().add(getClass().getResource("/hotel/style.css").toExternalForm());
 
         primaryStage.setTitle("LuxeStay Hotel Reservation System");
         primaryStage.setScene(scene);
