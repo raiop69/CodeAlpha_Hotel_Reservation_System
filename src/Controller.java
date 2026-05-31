@@ -1,12 +1,12 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.beans.property.*;
-import javafx.collections.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import java.net.URL;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -110,7 +110,7 @@ public class Controller implements Initializable {
                           navManageRooms, navManageUsers, navReports, navLogout;
     @FXML private VBox    adminMenuSection;
 
-    // Content pages (children of mainContent StackPane)
+    // Content pages
     @FXML private StackPane mainContent;
     @FXML private VBox    pageDashboard, pageSearch, pageMyBookings,
                           pageManageRooms, pageManageUsers, pageReports;
@@ -127,7 +127,7 @@ public class Controller implements Initializable {
     @FXML private TableColumn<RoomModel,Double>   colSPrice;
     @FXML private Label   bookingStatus;
 
-    // Booking dialog (hidden VBox inside pageSearch)
+    // Booking dialog
     @FXML private VBox    bookingPanel;
     @FXML private Label   bookRoomInfo;
     @FXML private DatePicker bookCheckIn, bookCheckOut;
@@ -160,10 +160,10 @@ public class Controller implements Initializable {
 
     // ── Runtime data ─────────────────────────────────────────
     private RoomModel selectedRoom;
-    private final ObservableList<RoomModel>       roomList   = FXCollections.observableArrayList();
-    private final ObservableList<ReservationModel> resList   = FXCollections.observableArrayList();
-    private final ObservableList<RoomModel>       allRooms   = FXCollections.observableArrayList();
-    private final ObservableList<ReservationModel> allRes    = FXCollections.observableArrayList();
+    private final ObservableList<RoomModel>        roomList = FXCollections.observableArrayList();
+    private final ObservableList<ReservationModel> resList  = FXCollections.observableArrayList();
+    private final ObservableList<RoomModel>        allRooms = FXCollections.observableArrayList();
+    private final ObservableList<ReservationModel> allRes   = FXCollections.observableArrayList();
 
     // ============================================================
     @Override
@@ -175,7 +175,6 @@ public class Controller implements Initializable {
 
     // ── TABLE COLUMN SETUP ────────────────────────────────────
     private void initTableColumns() {
-        // Search table
         colSRoomNo.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         colSCategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colSFloor.setCellValueFactory(new PropertyValueFactory<>("floor"));
@@ -185,7 +184,6 @@ public class Controller implements Initializable {
         colSStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         searchTable.setItems(roomList);
 
-        // My Bookings
         colMResId.setCellValueFactory(new PropertyValueFactory<>("resId"));
         colMRoom.setCellValueFactory(new PropertyValueFactory<>("roomNum"));
         colMCat.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -195,7 +193,6 @@ public class Controller implements Initializable {
         colMStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         myBookingsTable.setItems(resList);
 
-        // Admin – Manage Rooms
         colARoomNo.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         colACategory.setCellValueFactory(new PropertyValueFactory<>("category"));
         colAFloor.setCellValueFactory(new PropertyValueFactory<>("floor"));
@@ -205,7 +202,6 @@ public class Controller implements Initializable {
         colAStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         roomsAdminTable.setItems(allRooms);
 
-        // Admin – Manage Users / All Reservations
         colUGuest.setCellValueFactory(new PropertyValueFactory<>("guestName"));
         colURoom.setCellValueFactory(new PropertyValueFactory<>("roomNum"));
         colUCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkIn"));
@@ -233,23 +229,43 @@ public class Controller implements Initializable {
     private void showSignupPane() { loginPane.setVisible(false); signupPane.setVisible(true);  mainApp.setVisible(false); }
     private void showMainApp()    { loginPane.setVisible(false); signupPane.setVisible(false); mainApp.setVisible(true); }
 
-    @FXML private void onGoToSignup()  { signupError.setText(""); showSignupPane(); }
-    @FXML private void onGoToLogin()   { loginError.setText(""); showLoginPane(); }
+    @FXML private void onGoToSignup() { signupError.setText(""); showSignupPane(); }
+    @FXML private void onGoToLogin()  { loginError.setText(""); showLoginPane(); }
 
     private void setActivePage(VBox page) {
-        for (VBox p : new VBox[]{pageDashboard,pageSearch,pageMyBookings,
-                                  pageManageRooms,pageManageUsers,pageReports}) {
+        for (VBox p : new VBox[]{pageDashboard, pageSearch, pageMyBookings,
+                                  pageManageRooms, pageManageUsers, pageReports}) {
             p.setVisible(false); p.setManaged(false);
         }
         page.setVisible(true); page.setManaged(true);
     }
 
-    @FXML private void onNavDashboard()    { setActivePage(pageDashboard);   loadDashboard(); }
-    @FXML private void onNavSearch()       { setActivePage(pageSearch); bookingPanel.setVisible(false); bookingPanel.setManaged(false); }
-    @FXML private void onNavMyBookings()   { setActivePage(pageMyBookings);  loadMyBookings(); }
-    @FXML private void onNavManageRooms()  { setActivePage(pageManageRooms); loadAllRooms(); }
-    @FXML private void onNavManageUsers()  { setActivePage(pageManageUsers); loadAllReservations(); }
-    @FXML private void onNavReports()      { setActivePage(pageReports);     loadReports(); }
+    @FXML private void onNavDashboard() { setActivePage(pageDashboard); loadDashboard(); }
+
+    @FXML private void onNavSearch() {
+        setActivePage(pageSearch);
+        roomList.clear();
+        searchTable.setItems(roomList);
+        bookingPanel.setVisible(false);
+        bookingPanel.setManaged(false);
+    }
+
+    @FXML private void onNavMyBookings() {
+        setActivePage(pageMyBookings);
+        loadMyBookings();
+    }
+
+    @FXML private void onNavManageRooms() {
+        setActivePage(pageManageRooms);
+        loadAllRooms();
+    }
+
+    @FXML private void onNavManageUsers() {
+        setActivePage(pageManageUsers);
+        loadAllReservations();
+    }
+
+    @FXML private void onNavReports() { setActivePage(pageReports); loadReports(); }
 
     @FXML private void onLogout() {
         currentUser = null;
@@ -339,47 +355,41 @@ public class Controller implements Initializable {
     // ============================================================
     //  DASHBOARD
     // ============================================================
-private void loadDashboard() {
-    try (Connection con = DatabaseManager.getConnection()) {
-        boolean isAdmin = "admin".equals(currentUser.role);
+    private void loadDashboard() {
+        try (Connection con = DatabaseManager.getConnection()) {
+            boolean isAdmin = "admin".equals(currentUser.role);
 
-        // Total rooms
-        ResultSet rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Rooms");
-        if (rs.next()) cardTotalRooms.setText(String.valueOf(rs.getInt(1)));
+            ResultSet rs = con.createStatement().executeQuery("SELECT COUNT(*) FROM Rooms");
+            if (rs.next()) cardTotalRooms.setText(String.valueOf(rs.getInt(1)));
 
-        // Available rooms
-        rs = con.createStatement().executeQuery(
-            "SELECT COUNT(*) FROM Rooms WHERE status='available'");
-        if (rs.next()) cardAvailRooms.setText(String.valueOf(rs.getInt(1)));
-
-        if (isAdmin) {
-            // Admin sees ALL confirmed reservations
             rs = con.createStatement().executeQuery(
-                "SELECT COUNT(*) FROM Reservations WHERE status='confirmed'");
-            if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
+                "SELECT COUNT(*) FROM Rooms WHERE status='available'");
+            if (rs.next()) cardAvailRooms.setText(String.valueOf(rs.getInt(1)));
 
-            // Admin sees total revenue
-            rs = con.createStatement().executeQuery(
-                "SELECT ISNULL(SUM(total_price),0) FROM Reservations " +
-                "WHERE status IN ('confirmed','completed')");
-            if (rs.next())
-                cardRevenue.setText("PKR " + String.format("%,.0f", rs.getDouble(1)));
-        } else {
-            // Regular user sees only their own reservations
-            PreparedStatement ps = con.prepareStatement(
-                "SELECT COUNT(*) FROM Reservations WHERE status='confirmed' AND user_id=?");
-            ps.setInt(1, currentUser.userId);
-            rs = ps.executeQuery();
-            if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
+            if (isAdmin) {
+                rs = con.createStatement().executeQuery(
+                    "SELECT COUNT(*) FROM Reservations WHERE status='confirmed'");
+                if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
 
-            // Hide revenue card for regular users
-            cardRevenue.setText("N/A");
-            cardRevenue.setStyle("-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #4a5568;");
+                rs = con.createStatement().executeQuery(
+                    "SELECT ISNULL(SUM(total_price),0) FROM Reservations " +
+                    "WHERE status IN ('confirmed','completed')");
+                if (rs.next())
+                    cardRevenue.setText("PKR " + String.format("%,.0f", rs.getDouble(1)));
+            } else {
+                PreparedStatement ps = con.prepareStatement(
+                    "SELECT COUNT(*) FROM Reservations WHERE status='confirmed' AND user_id=?");
+                ps.setInt(1, currentUser.userId);
+                rs = ps.executeQuery();
+                if (rs.next()) cardTotalRes.setText(String.valueOf(rs.getInt(1)));
+
+                cardRevenue.setText("N/A");
+                cardRevenue.setStyle("-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #4a5568;");
+            }
+        } catch (SQLException e) {
+            showAlert("DB Error", e.getMessage());
         }
-    } catch (SQLException e) {
-        showAlert("DB Error", e.getMessage());
     }
-}
 
     // ============================================================
     //  SEARCH ROOMS
@@ -396,7 +406,8 @@ private void loadDashboard() {
             bookingStatus.setText("Check-out must be after check-in."); return;
         }
         String cat = searchCategory.getValue();
-        roomList.clear();
+
+        ObservableList<RoomModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
             String sql =
                 "SELECT r.room_id,r.room_number,rc.category_name,r.floor,r.capacity," +
@@ -415,16 +426,18 @@ private void loadDashboard() {
             ps.setDate(idx,   Date.valueOf(co));
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                roomList.add(new RoomModel(
+                freshList.add(new RoomModel(
                     rs.getInt("room_id"), rs.getString("room_number"),
                     rs.getString("category_name"), rs.getInt("floor"),
                     rs.getInt("capacity"), rs.getString("amenities"),
                     rs.getString("status"), rs.getDouble("price_per_night")));
             }
-            bookingStatus.setText(roomList.size() + " room(s) found.");
+            bookingStatus.setText(freshList.size() + " room(s) found.");
         } catch (SQLException e) {
             showAlert("DB Error", e.getMessage());
         }
+        searchTable.setItems(freshList);
+        searchTable.refresh();
     }
 
     @FXML
@@ -441,8 +454,7 @@ private void loadDashboard() {
         bookingPanel.setManaged(true);
     }
 
-    @FXML
-    private void onUpdateBookTotal() { updateBookTotal(); }
+    @FXML private void onUpdateBookTotal() { updateBookTotal(); }
 
     private void updateBookTotal() {
         LocalDate ci = bookCheckIn.getValue();
@@ -467,7 +479,6 @@ private void loadDashboard() {
         double total = nights * selectedRoom.getPrice();
         String method = bookPayMethod.getValue();
         try (Connection con = DatabaseManager.getConnection()) {
-            // Insert reservation
             String sql = "INSERT INTO Reservations(user_id,room_id,check_in,check_out,total_price,status)"
                        + " OUTPUT INSERTED.reservation_id VALUES(?,?,?,?,?,'confirmed')";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -480,7 +491,6 @@ private void loadDashboard() {
             int resId = 0;
             if (rs.next()) resId = rs.getInt(1);
 
-            // Insert payment
             PreparedStatement pp = con.prepareStatement(
                 "INSERT INTO Payments(reservation_id,amount,payment_method,payment_status) VALUES(?,?,?,'paid')");
             pp.setInt(1, resId); pp.setDouble(2, total); pp.setString(3, method);
@@ -488,7 +498,7 @@ private void loadDashboard() {
 
             bookingPanel.setVisible(false);
             bookingPanel.setManaged(false);
-            roomList.clear();
+            searchTable.setItems(FXCollections.observableArrayList());
             bookingStatus.setStyle("-fx-text-fill: #4ade80;");
             bookingStatus.setText("✓ Booking confirmed! Reservation ID: " + resId);
         } catch (SQLException e) {
@@ -504,27 +514,34 @@ private void loadDashboard() {
     //  MY BOOKINGS
     // ============================================================
     private void loadMyBookings() {
-        resList.clear();
+        ObservableList<ReservationModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
-            String sql =
-                "SELECT r.reservation_id,u.full_name,rm.room_number,rc.category_name," +
-                "r.check_in,r.check_out,r.total_price,r.status " +
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT r.reservation_id, u.full_name, rm.room_number, rc.category_name, " +
+                "r.check_in, r.check_out, r.total_price, r.status " +
                 "FROM Reservations r " +
                 "JOIN Users u ON r.user_id=u.user_id " +
                 "JOIN Rooms rm ON r.room_id=rm.room_id " +
                 "JOIN RoomCategories rc ON rm.category_id=rc.category_id " +
-                "WHERE r.user_id=? ORDER BY r.created_at DESC";
-            PreparedStatement ps = con.prepareStatement(sql);
+                "WHERE r.user_id=?");
             ps.setInt(1, currentUser.userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                resList.add(new ReservationModel(
-                    rs.getInt("reservation_id"), rs.getString("full_name"),
-                    rs.getString("room_number"), rs.getString("category_name"),
-                    rs.getString("check_in"), rs.getString("check_out"),
-                    rs.getDouble("total_price"), rs.getString("status")));
+                freshList.add(new ReservationModel(
+                    rs.getInt("reservation_id"),
+                    rs.getString("full_name"),
+                    rs.getString("room_number"),
+                    rs.getString("category_name"),
+                    rs.getDate("check_in")  != null ? rs.getDate("check_in").toString()  : "",
+                    rs.getDate("check_out") != null ? rs.getDate("check_out").toString() : "",
+                    rs.getDouble("total_price"),
+                    rs.getString("status")));
             }
-        } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
+        } catch (SQLException e) {
+            showAlert("DB Error", e.getMessage());
+        }
+        myBookingsTable.setItems(freshList);
+        myBookingsTable.refresh();
     }
 
     @FXML
@@ -538,11 +555,9 @@ private void loadDashboard() {
         confirm.showAndWait().ifPresent(bt -> {
             if (bt == ButtonType.YES) {
                 try (Connection con = DatabaseManager.getConnection()) {
-                    // Cancel reservation
                     PreparedStatement ps = con.prepareStatement(
                         "UPDATE Reservations SET status='cancelled' WHERE reservation_id=?");
                     ps.setInt(1, sel.getResId()); ps.executeUpdate();
-                    // Refund payment
                     PreparedStatement pp = con.prepareStatement(
                         "UPDATE Payments SET payment_status='refunded' WHERE reservation_id=?");
                     pp.setInt(1, sel.getResId()); pp.executeUpdate();
@@ -556,7 +571,7 @@ private void loadDashboard() {
     //  ADMIN – MANAGE ROOMS
     // ============================================================
     private void loadAllRooms() {
-        allRooms.clear();
+        ObservableList<RoomModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
             String sql =
                 "SELECT r.room_id,r.room_number,rc.category_name,r.floor,r.capacity," +
@@ -565,13 +580,15 @@ private void loadDashboard() {
                 "ORDER BY r.room_number";
             ResultSet rs = con.createStatement().executeQuery(sql);
             while (rs.next()) {
-                allRooms.add(new RoomModel(
+                freshList.add(new RoomModel(
                     rs.getInt("room_id"), rs.getString("room_number"),
                     rs.getString("category_name"), rs.getInt("floor"),
                     rs.getInt("capacity"), rs.getString("amenities"),
                     rs.getString("status"), rs.getDouble("price_per_night")));
             }
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
+        roomsAdminTable.setItems(freshList);
+        roomsAdminTable.refresh();
     }
 
     @FXML
@@ -591,7 +608,6 @@ private void loadDashboard() {
             int cap = Integer.parseInt(capS);
             double pr = Double.parseDouble(prS);
             try (Connection con = DatabaseManager.getConnection()) {
-                // get category id
                 PreparedStatement pc = con.prepareStatement(
                     "SELECT category_id FROM RoomCategories WHERE category_name=?");
                 pc.setString(1,cat);
@@ -649,7 +665,7 @@ private void loadDashboard() {
     //  ADMIN – ALL RESERVATIONS
     // ============================================================
     private void loadAllReservations() {
-        allRes.clear();
+        ObservableList<ReservationModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
             String sql =
                 "SELECT r.reservation_id,u.full_name,rm.room_number,rc.category_name," +
@@ -658,16 +674,19 @@ private void loadDashboard() {
                 "JOIN Users u ON r.user_id=u.user_id " +
                 "JOIN Rooms rm ON r.room_id=rm.room_id " +
                 "JOIN RoomCategories rc ON rm.category_id=rc.category_id " +
-                "ORDER BY r.created_at DESC";
+                "ORDER BY r.reservation_id DESC";
             ResultSet rs = con.createStatement().executeQuery(sql);
             while (rs.next()) {
-                allRes.add(new ReservationModel(
+                freshList.add(new ReservationModel(
                     rs.getInt("reservation_id"), rs.getString("full_name"),
                     rs.getString("room_number"), rs.getString("category_name"),
-                    rs.getString("check_in"), rs.getString("check_out"),
+                    rs.getDate("check_in")  != null ? rs.getDate("check_in").toString()  : "",
+                    rs.getDate("check_out") != null ? rs.getDate("check_out").toString() : "",
                     rs.getDouble("total_price"), rs.getString("status")));
             }
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
+        usersReservTable.setItems(freshList);
+        usersReservTable.refresh();
     }
 
     @FXML
