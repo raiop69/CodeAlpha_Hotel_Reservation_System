@@ -1,0 +1,6 @@
+# Ignore VS Code configuration folder
+.vscode/
+
+# Ignore database manager file containing credentials
+DatabaseManager.*
+
