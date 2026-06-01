@@ -82,22 +82,15 @@ class ReservationModel {
     public DoubleProperty  totalProperty()     { return total; }
     public StringProperty  statusProperty()    { return status; }
 }
-
-// ============================================================
-//  MAIN CONTROLLER
-// ============================================================
 public class Controller implements Initializable {
 
-    // ── Session ──────────────────────────────────────────────
+ 
     private UserModel currentUser;
-
-    // ── FXML – Root & Navigation ─────────────────────────────
     @FXML private StackPane rootStack;
 
-    // Login / Signup panes
+    // Login / Signup
     @FXML private VBox    loginPane, signupPane;
-    @FXML private TextField  loginUsername, signupUsername, signupFullName,
-                              signupEmail, signupPhone;
+    @FXML private TextField  loginUsername, signupUsername, signupFullName,signupEmail, signupPhone;
     @FXML private PasswordField loginPassword, signupPassword, signupConfirm;
     @FXML private Label   loginError, signupError;
 
@@ -106,19 +99,17 @@ public class Controller implements Initializable {
     @FXML private Label   lblWelcome, lblUserRole;
 
     // Sidebar nav buttons
-    @FXML private Button  navDashboard, navSearch, navMyBookings,
-                          navManageRooms, navManageUsers, navReports, navLogout;
+    @FXML private Button  navDashboard, navSearch, navMyBookings,navManageRooms, navManageUsers, navReports, navLogout;
     @FXML private VBox    adminMenuSection;
 
     // Content pages
     @FXML private StackPane mainContent;
-    @FXML private VBox    pageDashboard, pageSearch, pageMyBookings,
-                          pageManageRooms, pageManageUsers, pageReports;
+    @FXML private VBox    pageDashboard, pageSearch, pageMyBookings,pageManageRooms, pageManageUsers, pageReports;
 
-    // ── Dashboard cards ──────────────────────────────────────
+    // Dashboard cards
     @FXML private Label cardTotalRooms, cardAvailRooms, cardTotalRes, cardRevenue;
 
-    // ── Search Page ──────────────────────────────────────────
+    // Search Page 
     @FXML private ComboBox<String>  searchCategory;
     @FXML private DatePicker        searchCheckIn, searchCheckOut;
     @FXML private TableView<RoomModel>            searchTable;
@@ -134,14 +125,13 @@ public class Controller implements Initializable {
     @FXML private ComboBox<String> bookPayMethod;
     @FXML private Label   bookTotalPrice;
 
-    // ── My Bookings ──────────────────────────────────────────
+    // My Bookings
     @FXML private TableView<ReservationModel>            myBookingsTable;
     @FXML private TableColumn<ReservationModel,Integer>  colMResId;
-    @FXML private TableColumn<ReservationModel,String>   colMRoom, colMCat,
-                                                          colMCheckIn, colMCheckOut, colMStatus;
+    @FXML private TableColumn<ReservationModel,String>   colMRoom, colMCat,colMCheckIn, colMCheckOut, colMStatus;
     @FXML private TableColumn<ReservationModel,Double>   colMTotal;
 
-    // ── Manage Rooms (Admin) ──────────────────────────────────
+    // Manage Rooms (Admin) 
     @FXML private TableView<RoomModel>           roomsAdminTable;
     @FXML private TableColumn<RoomModel,String>  colARoomNo, colACategory, colAAmenities, colAStatus;
     @FXML private TableColumn<RoomModel,Integer> colAFloor, colACapacity;
@@ -149,23 +139,21 @@ public class Controller implements Initializable {
     @FXML private TextField  addRoomNumber, addFloor, addCapacity, addAmenities, addPrice;
     @FXML private ComboBox<String> addRoomCategory, addRoomStatus;
 
-    // ── Manage Users (Admin) ──────────────────────────────────
+    // Manage Users (Admin)
     @FXML private TableView<ReservationModel>           usersReservTable;
-    @FXML private TableColumn<ReservationModel,String>  colUGuest, colURoom,
-                                                         colUCheckIn, colUCheckOut, colUStatus;
+    @FXML private TableColumn<ReservationModel,String>  colUGuest, colURoom,colUCheckIn, colUCheckOut, colUStatus;
     @FXML private TableColumn<ReservationModel,Double>  colUTotal;
 
-    // ── Reports (Admin) ──────────────────────────────────────
+    // Reports (Admin)
     @FXML private Label reportTotalRes, reportRevenue, reportCancelled, reportOccupancy;
 
-    // ── Runtime data ─────────────────────────────────────────
+    // Runtime data
     private RoomModel selectedRoom;
     private final ObservableList<RoomModel>        roomList = FXCollections.observableArrayList();
     private final ObservableList<ReservationModel> resList  = FXCollections.observableArrayList();
     private final ObservableList<RoomModel>        allRooms = FXCollections.observableArrayList();
     private final ObservableList<ReservationModel> allRes   = FXCollections.observableArrayList();
 
-    // ============================================================
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         showLoginPane();
@@ -173,9 +161,9 @@ public class Controller implements Initializable {
         initComboBoxes();
     }
 
-    // ── TABLE COLUMN SETUP ────────────────────────────────────
+    // TABLE COLUMN SETUP
    private void initTableColumns() {
-    // ── Search Table ──
+    // Search Table
     colSRoomNo.setCellValueFactory(c -> c.getValue().roomNumberProperty());
     colSCategory.setCellValueFactory(c -> c.getValue().categoryProperty());
     colSFloor.setCellValueFactory(c -> c.getValue().floorProperty().asObject());
@@ -185,7 +173,7 @@ public class Controller implements Initializable {
     colSStatus.setCellValueFactory(c -> c.getValue().statusProperty());
     searchTable.setItems(roomList);
 
-    // ── My Bookings ──
+    // My Bookings
     colMResId.setCellValueFactory(c -> c.getValue().resIdProperty().asObject());
     colMRoom.setCellValueFactory(c -> c.getValue().roomNumProperty());
     colMCat.setCellValueFactory(c -> c.getValue().categoryProperty());
@@ -195,7 +183,7 @@ public class Controller implements Initializable {
     colMStatus.setCellValueFactory(c -> c.getValue().statusProperty());
     myBookingsTable.setItems(resList);
 
-    // ── Admin Manage Rooms ──
+    // Admin Manage Rooms
     colARoomNo.setCellValueFactory(c -> c.getValue().roomNumberProperty());
     colACategory.setCellValueFactory(c -> c.getValue().categoryProperty());
     colAFloor.setCellValueFactory(c -> c.getValue().floorProperty().asObject());
@@ -205,7 +193,7 @@ public class Controller implements Initializable {
     colAStatus.setCellValueFactory(c -> c.getValue().statusProperty());
     roomsAdminTable.setItems(allRooms);
 
-    // ── Admin All Reservations ──
+    // Admin All Reservations
     colUGuest.setCellValueFactory(c -> c.getValue().guestNameProperty());
     colURoom.setCellValueFactory(c -> c.getValue().roomNumProperty());
     colUCheckIn.setCellValueFactory(c -> c.getValue().checkInProperty());
@@ -226,9 +214,9 @@ public class Controller implements Initializable {
         addRoomStatus.setValue("available");
     }
 
-    // ============================================================
-    //  NAVIGATION
-    // ============================================================
+    
+    // NAVIGATION
+    
     private void showLoginPane()  { loginPane.setVisible(true);  signupPane.setVisible(false); mainApp.setVisible(false); }
     private void showSignupPane() { loginPane.setVisible(false); signupPane.setVisible(true);  mainApp.setVisible(false); }
     private void showMainApp()    { loginPane.setVisible(false); signupPane.setVisible(false); mainApp.setVisible(true); }
@@ -276,10 +264,6 @@ public class Controller implements Initializable {
         loginUsername.clear(); loginPassword.clear(); loginError.setText("");
         showLoginPane();
     }
-
-    // ============================================================
-    //  AUTH – LOGIN
-    // ============================================================
     @FXML
     private void onLogin() {
         String user = loginUsername.getText().trim();
@@ -305,13 +289,10 @@ public class Controller implements Initializable {
                 loginError.setText("Invalid username or password.");
             }
         } catch (SQLException e) {
-            loginError.setText("DB Error: " + e.getMessage());
+             loginError.setText("DB Error: " + e.getMessage());
         }
     }
 
-    // ============================================================
-    //  AUTH – SIGN UP
-    // ============================================================
     @FXML
     private void onSignup() {
         String uname = signupUsername.getText().trim();
@@ -341,10 +322,6 @@ public class Controller implements Initializable {
             signupError.setText("Error: " + e.getMessage());
         }
     }
-
-    // ============================================================
-    //  SETUP MAIN APP AFTER LOGIN
-    // ============================================================
     private void setupMainApp() {
         lblWelcome.setText("Welcome, " + currentUser.fullName);
         lblUserRole.setText(currentUser.role.toUpperCase());
@@ -355,10 +332,6 @@ public class Controller implements Initializable {
         setActivePage(pageDashboard);
         loadDashboard();
     }
-
-    // ============================================================
-    //  DASHBOARD
-    // ============================================================
     private void loadDashboard() {
         try (Connection con = DatabaseManager.getConnection()) {
             boolean isAdmin = "admin".equals(currentUser.role);
@@ -394,10 +367,7 @@ public class Controller implements Initializable {
             showAlert("DB Error", e.getMessage());
         }
     }
-
-    // ============================================================
     //  SEARCH ROOMS
-    // ============================================================
     @FXML
     private void onSearchRooms() {
         LocalDate ci = searchCheckIn.getValue();
@@ -514,9 +484,7 @@ public class Controller implements Initializable {
         bookingPanel.setVisible(false); bookingPanel.setManaged(false);
     }
 
-    // ============================================================
     //  MY BOOKINGS
-    // ============================================================
     private void loadMyBookings() {
         ObservableList<ReservationModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
@@ -571,9 +539,9 @@ public class Controller implements Initializable {
         });
     }
 
-    // ============================================================
+    
     //  ADMIN – MANAGE ROOMS
-    // ============================================================
+    
     private void loadAllRooms() {
         ObservableList<RoomModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
@@ -664,10 +632,7 @@ public class Controller implements Initializable {
             ps.executeUpdate(); loadAllRooms();
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
     }
-
-    // ============================================================
-    //  ADMIN – ALL RESERVATIONS
-    // ============================================================
+    
     private void loadAllReservations() {
         ObservableList<ReservationModel> freshList = FXCollections.observableArrayList();
         try (Connection con = DatabaseManager.getConnection()) {
@@ -687,7 +652,7 @@ public class Controller implements Initializable {
                     rs.getDate("check_in")  != null ? rs.getDate("check_in").toString()  : "",
                     rs.getDate("check_out") != null ? rs.getDate("check_out").toString() : "",
                     rs.getDouble("total_price"), rs.getString("status")));
-            }
+        }
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
         usersReservTable.setItems(freshList);
         usersReservTable.refresh();
@@ -710,9 +675,6 @@ public class Controller implements Initializable {
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
     }
 
-    // ============================================================
-    //  ADMIN – REPORTS
-    // ============================================================
     private void loadReports() {
         try (Connection con = DatabaseManager.getConnection()) {
             ResultSet rs;
@@ -739,9 +701,6 @@ public class Controller implements Initializable {
         } catch (SQLException e) { showAlert("DB Error", e.getMessage()); }
     }
 
-    // ============================================================
-    //  UTILITY
-    // ============================================================
     private void showAlert(String title, String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         a.setTitle(title); a.setHeaderText(null); a.showAndWait();
