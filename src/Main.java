@@ -12,8 +12,6 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 1280, 720);
-
-        // Safe CSS loading — won't crash if file missing
         java.net.URL cssUrl = getClass().getResource("style.css");
         if (cssUrl != null) {
             scene.getStylesheets().add(cssUrl.toExternalForm());
